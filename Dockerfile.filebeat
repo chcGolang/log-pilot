@@ -10,7 +10,7 @@ RUN go install
 
 FROM alpine:3.6
 
-ENV FILEBEAT_VERSION=7.15.2
+ENV FILEBEAT_VERSION=7.17.5
 COPY assets/glibc/glibc-2.26-r0.apk /tmp/
 RUN apk update && \ 
     apk add python && \
