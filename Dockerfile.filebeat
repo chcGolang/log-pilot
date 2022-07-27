@@ -6,6 +6,7 @@ ARG GOARCH=amd64
 RUN set -ex && apk add --no-cache make git
 WORKDIR $PILOT_DIR
 COPY . $PILOT_DIR
+RUN go mod vendor
 RUN go install 
 
 FROM alpine:3.6
