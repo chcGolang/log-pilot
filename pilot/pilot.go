@@ -172,6 +172,7 @@ func (p *Pilot) watch() error {
 
 // LogConfig log configuration
 type LogConfig struct {
+	Id           string
 	Name         string
 	HostDir      string
 	ContainerDir string
@@ -377,7 +378,7 @@ func (p *Pilot) newContainer(containerJSON *types.ContainerJSON) error {
 		}
 	}
 
-	logConfigs, err := p.getLogConfigs(jsonLogPath, mounts, labels)
+	logConfigs, err := p.getLogConfigs(id, jsonLogPath, mounts, labels)
 	if err != nil {
 		return err
 	}
@@ -544,7 +545,11 @@ func (p *Pilot) tryCheckKafkaTopic(topic string) error {
 	return fmt.Errorf("invalid topic: %s, supported topics: %v", topic, topics)
 }
 
-func (p *Pilot) parseLogConfig(name string, info *LogInfoNode, jsonLogPath string, mounts map[string]types.MountPoint) (*LogConfig, error) {
+func (p *Pilot) parseLogConfig(id, name string, info *LogInfoNode, jsonLogPath string, mounts map[string]types.MountPoint) (*LogConfig, error) {
+	if len(id) > 12 {
+		id = id[0:13]
+	}
+	id = id+"-"+name
 	path := strings.TrimSpace(info.value)
 	if path == "" {
 		return nil, fmt.Errorf("path for %s is empty", name)
@@ -602,6 +607,7 @@ func (p *Pilot) parseLogConfig(name string, info *LogInfoNode, jsonLogPath strin
 		}
 
 		return &LogConfig{
+			Id:           id,
 			Name:         name,
 			HostDir:      filepath.Join(p.baseDir, filepath.Dir(jsonLogPath)),
 			File:         logFile,
@@ -630,6 +636,7 @@ func (p *Pilot) parseLogConfig(name string, info *LogInfoNode, jsonLogPath strin
 	}
 
 	cfg := &LogConfig{
+		Id:           id,
 		Name:         name,
 		ContainerDir: containerDir,
 		Format:       format.value,
@@ -685,7 +692,7 @@ func (node *LogInfoNode) get(key string) string {
 	return ""
 }
 
-func (p *Pilot) getLogConfigs(jsonLogPath string, mounts []types.MountPoint, labels map[string]string) ([]*LogConfig, error) {
+func (p *Pilot) getLogConfigs(id string, jsonLogPath string, mounts []types.MountPoint, labels map[string]string) ([]*LogConfig, error) {
 	var ret []*LogConfig
 
 	mountsMap := make(map[string]types.MountPoint)
@@ -731,7 +738,7 @@ func (p *Pilot) getLogConfigs(jsonLogPath string, mounts []types.MountPoint, lab
 	}
 
 	for name, node := range root.children {
-		logConfig, err := p.parseLogConfig(name, node, jsonLogPath, mountsMap)
+		logConfig, err := p.parseLogConfig(id, name, node, jsonLogPath, mountsMap)
 		if err != nil {
 			return nil, err
 		}

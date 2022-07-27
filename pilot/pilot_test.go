@@ -24,7 +24,7 @@ func (p *PilotSuite) TestGetLogConfigs(c *check.C) {
 	}
 
 	labels := map[string]string{}
-	configs, err := pilot.getLogConfigs("/path/to/json.log", []types.MountPoint{}, labels)
+	configs, err := pilot.getLogConfigs("3ea454c8c69e3", "/path/to/json.log", []types.MountPoint{}, labels)
 	c.Assert(err, check.IsNil)
 	c.Assert(configs, check.HasLen, 0)
 
@@ -36,7 +36,7 @@ func (p *PilotSuite) TestGetLogConfigs(c *check.C) {
 	}
 
 	//no mount
-	configs, err = pilot.getLogConfigs("/path/to/json.log", []types.MountPoint{}, labels)
+	configs, err = pilot.getLogConfigs("3ea454c8c69e3","/path/to/json.log", []types.MountPoint{}, labels)
 	c.Assert(err, check.NotNil)
 
 	mounts := []types.MountPoint{
@@ -45,7 +45,7 @@ func (p *PilotSuite) TestGetLogConfigs(c *check.C) {
 			Destination: "/var/log",
 		},
 	}
-	configs, err = pilot.getLogConfigs("/path/to/json.log", mounts, labels)
+	configs, err = pilot.getLogConfigs("3ea454c8c69e3","/path/to/json.log", mounts, labels)
 	c.Assert(err, check.IsNil)
 	c.Assert(configs, check.HasLen, 1)
 	c.Assert(configs[0].Format, check.Equals, "json")
@@ -61,7 +61,7 @@ func (p *PilotSuite) TestGetLogConfigs(c *check.C) {
 		"aliyun.logs.hello.tags":           "name=hello,stage=test",
 		"aliyun.logs.hello.format.pattern": "(?=name:hello).*",
 	}
-	configs, err = pilot.getLogConfigs("/path/to/json.log", mounts, labels)
+	configs, err = pilot.getLogConfigs("3ea454c8c69e3","/path/to/json.log", mounts, labels)
 	c.Assert(err, check.IsNil)
 	c.Assert(configs[0].Format, check.Equals, "/(?=name:hello).*/")
 }
