@@ -27,7 +27,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
     cp -rf /tmp/filebeat-${FILEBEAT_VERSION}-linux-arm64/filebeat /usr/bin/ && \
     cp -rf /tmp/filebeat-${FILEBEAT_VERSION}-linux-arm64/fields.yml /etc/filebeat/ && \
     cp -rf /tmp/filebeat-${FILEBEAT_VERSION}-linux-arm64/kibana /etc/filebeat/ && \
-    cp -rf /tmp/filebeat-${FILEBEAT_VERSION}-linux-arm64/module /etc/filebeat/ && \
+    cp -rf /tmp/filebeat-${FILEBEAT_VERSION}-linux-arm64/module /usr/bin/ && \
     cp -rf /tmp/filebeat-${FILEBEAT_VERSION}-linux-arm64/modules.d /etc/filebeat/ && \
     apk add --allow-untrusted /tmp/glibc-2.23-r3.apk && \
     ln -s /lib/ld-musl-aarch64.so.1   /lib/ld-linux-aarch64.so.1 && \
