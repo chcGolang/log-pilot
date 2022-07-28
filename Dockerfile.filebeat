@@ -24,7 +24,7 @@ RUN apk update && \
     cp -rf /tmp/filebeat-${FILEBEAT_VERSION}-linux-x86_64/filebeat /usr/bin/ && \
     cp -rf /tmp/filebeat-${FILEBEAT_VERSION}-linux-x86_64/fields.yml /etc/filebeat/ && \
     cp -rf /tmp/filebeat-${FILEBEAT_VERSION}-linux-x86_64/kibana /etc/filebeat/ && \
-    cp -rf /tmp/filebeat-${FILEBEAT_VERSION}-linux-x86_64/module /etc/filebeat/ && \
+    cp -rf /tmp/filebeat-${FILEBEAT_VERSION}-linux-x86_64/module /usr/bin/ && \
     cp -rf /tmp/filebeat-${FILEBEAT_VERSION}-linux-x86_64/modules.d /etc/filebeat/ && \
     apk add --allow-untrusted /tmp/glibc-2.26-r0.apk && \
     rm -rf /var/cache/apk/* /tmp/filebeat-${FILEBEAT_VERSION}-linux-x86_64.tar.gz /tmp/filebeat-${FILEBEAT_VERSION}-linux-x86_64 /tmp/glibc-2.26-r0.apk
